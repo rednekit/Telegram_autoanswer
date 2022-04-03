@@ -12,6 +12,7 @@ file.close()
 key = ""
 answers={}
 i1=0
+off=True
 for line in H:#из файла заполняем справочник впросами и вариантами ответов
     g=line.strip()
     # g = file.readlines(i)
@@ -31,7 +32,11 @@ client = TelegramClient('Spider', api_id, api_hash)
 @client.on(events.NewMessage)
 async def my_event_handler(event):
     for k in answers:
-        if k in event.raw_text:
+        if event.raw_text == "oN":
+            off=False
+        elif event.raw_text == "oFf":
+            off=True
+        if k in event.raw_text and off==False:
             await event.reply(answers[k][random.randint(0,len(answers[k])-1)])
 client.start()
 client.run_until_disconnected()
